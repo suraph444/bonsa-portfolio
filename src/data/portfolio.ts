@@ -164,7 +164,7 @@ export const defaultProjects = [
       'Interactive web tool to visualize sorting algorithms, binary search trees, and graph traversals with adjustable execution speeds.',
     longDescription:
       'Created as both a personal computer science study tool and a learning resource for fellow students to intuitively grasp algorithmic time complexity and data structures in real-time.',
-    image: 'https://images.unsplash.com/photo-1516116211227-bbc13c744be6?w=800&q=80',
+    image: 'https://images.unsplash.com/photo-1551288049-bebda4e38f71?w=800&q=80',
     technologies: ['TypeScript', 'React', 'Framer Motion', 'Tailwind CSS'],
     role: 'Frontend Developer',
     highlights: [

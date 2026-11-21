@@ -12,7 +12,7 @@
   from = "/uploads/*"
   to = "https://bonsa-portfolio-production.up.railway.app/uploads/:splat"
   status = 200
-  force = true
+  force = false
 
 [[redirects]]
   from = "/*"
