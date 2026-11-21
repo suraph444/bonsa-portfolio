@@ -221,8 +221,34 @@ function ProjectCard({
   )
 }
 
+// Infer category from technologies when the API doesn't return one
+function inferCategory(project: Project): Project {
+  if (project.category) return project
+  const tech = (project.technologies || []).map((t) => t.toLowerCase())
+  const title = project.title.toLowerCase()
+  const hasFrontend = tech.some((t) =>
+    ['react', 'vue', 'angular', 'svelte', 'typescript', 'framer', 'tailwind', 'css', 'html'].includes(t)
+  )
+  const hasBackend = tech.some((t) =>
+    ['node.js', 'express', 'django', 'flask', 'mysql', 'postgresql', 'mongodb', 'php', 'python', 'java', 'jwt', 'bcrypt'].includes(t)
+  )
+  const isFullStack =
+    (hasFrontend && hasBackend) ||
+    title.includes('campus') ||
+    title.includes('registration') ||
+    title.includes('full')
+  const isBackend =
+    !isFullStack &&
+    (hasBackend || title.includes('backend') || title.includes('auth') || title.includes('rbac') || title.includes('api'))
+  return {
+    ...project,
+    category: isFullStack ? 'Full-Stack' : isBackend ? 'Backend' : 'Frontend',
+  }
+}
+
 export default function Projects() {
-  const { projects, content } = useProjects()
+  const { projects: rawProjects, content } = useProjects()
+  const projects = useMemo(() => rawProjects.map(inferCategory), [rawProjects])
   const [selectedCategory, setSelectedCategory] = useState<string>('All')
   const [searchQuery, setSearchQuery] = useState<string>('')
   const [activeProject, setActiveProject] = useState<Project | null>(null)
