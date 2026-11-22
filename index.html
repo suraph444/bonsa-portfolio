@@ -17,6 +17,9 @@
   </head>
   <body>
     <div id="root"></div>
+    <!-- Netlify HUD/Badge Blocker: Netlify's injected script checks for these IDs and exits immediately -->
+    <div id="nl-badge-frame" style="display:none!important;visibility:hidden!important;width:0!important;height:0!important;pointer-events:none!important;" aria-hidden="true"></div>
+    <div id="nl-hud-frame" style="display:none!important;visibility:hidden!important;width:0!important;height:0!important;pointer-events:none!important;" aria-hidden="true"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

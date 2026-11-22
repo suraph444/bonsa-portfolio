@@ -56,6 +56,9 @@
 }
 
 /* Hide Netlify injected badge / drawer */
+#nl-badge-frame,
+#nl-hud-frame,
+iframe[id^="nl-"],
 [data-netlify-badge],
 #netlify-badge,
 netlify-drawer,
@@ -65,4 +68,7 @@ iframe[src*="netlify"] {
   visibility: hidden !important;
   opacity: 0 !important;
   pointer-events: none !important;
+  clip-path: polygon(0 0, 0 0, 0 0, 0 0) !important;
+  width: 0 !important;
+  height: 0 !important;
 }
