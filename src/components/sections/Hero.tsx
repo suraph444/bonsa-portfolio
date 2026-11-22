@@ -42,7 +42,7 @@ function FloatingTokens({ reduced }: { reduced: boolean | null }) {
   const tokens = CODE_TOKENS
   if (reduced) return null
   return (
-    <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+    <div className="absolute inset-0 overflow-hidden pointer-events-none hidden md:block" aria-hidden="true">
       {tokens.map((token, i) => {
         const x = 5 + (i * 23 + (i % 5) * 11) % 90
         const y = 5 + (i * 17 + (i % 4) * 13) % 85
@@ -192,15 +192,16 @@ function RoleCycler({ reduced }: { reduced: boolean | null }) {
 type GreetingPhase = 'typing-open' | 'pausing' | 'erasing' | 'typing-name' | 'done'
 
 function AnimatedGreeting({
-  name, greeting, prefersReduced, profileLoading,
-}: { name: string; greeting: string; prefersReduced: boolean | null; profileLoading: boolean }) {
-  const OPENING   = 'Hey there! 👋'
+  name, greeting, prefersReduced,
+}: { name: string; greeting: string; prefersReduced: boolean | null; profileLoading?: boolean }) {
+  const OPENING_TEXT = 'Hey there!'
   const FULL_NAME = `${greeting} ${name}`
   const NAME_START = `${greeting} `.length
 
-  const [phase, setPhase]       = useState<GreetingPhase>('typing-open')
+  const [phase, setPhase] = useState<GreetingPhase>('typing-open')
   const [displayed, setDisplayed] = useState('')
   const [showCursor, setShowCursor] = useState(true)
+  const [showWave, setShowWave] = useState(false)
 
   /* reduced-motion: skip straight to final text */
   if (prefersReduced) {
@@ -209,45 +210,40 @@ function AnimatedGreeting({
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
-    if (profileLoading) return
-
-    let raf = 0
+    let timer: ReturnType<typeof setTimeout> | null = null
     let cancelled = false
 
-    function schedule(fn: () => void, delay: number) {
-      const start = Date.now()
-      const tick = () => {
-        if (cancelled) return
-        if (Date.now() - start >= delay) fn()
-        else raf = requestAnimationFrame(tick)
-      }
-      raf = requestAnimationFrame(tick)
+    function wait(fn: () => void, ms: number) {
+      if (cancelled) return
+      timer = setTimeout(fn, ms)
     }
 
     function typeOpen(pos: number) {
       if (cancelled) return
-      if (pos <= OPENING.length) {
-        setDisplayed(OPENING.slice(0, pos))
-        schedule(() => typeOpen(pos + 1), 55)
+      if (pos <= OPENING_TEXT.length) {
+        setDisplayed(OPENING_TEXT.slice(0, pos))
+        wait(() => typeOpen(pos + 1), 32)
       } else {
+        setShowWave(true)
         setPhase('pausing')
-        schedule(startErase, 1300)
+        wait(startErase, 420)
       }
     }
 
     function startErase() {
+      setShowWave(false)
       setPhase('erasing')
-      eraseOpen(OPENING.length)
+      eraseOpen(OPENING_TEXT.length)
     }
 
     function eraseOpen(pos: number) {
       if (cancelled) return
       if (pos >= 0) {
-        setDisplayed(OPENING.slice(0, pos))
-        schedule(() => eraseOpen(pos - 1), 28)
+        setDisplayed(OPENING_TEXT.slice(0, pos))
+        wait(() => eraseOpen(pos - 1), 18)
       } else {
         setPhase('typing-name')
-        schedule(() => typeName(0), 120)
+        wait(() => typeName(0), 70)
       }
     }
 
@@ -255,28 +251,43 @@ function AnimatedGreeting({
       if (cancelled) return
       if (pos <= FULL_NAME.length) {
         setDisplayed(FULL_NAME.slice(0, pos))
-        schedule(() => typeName(pos + 1), 52)
+        wait(() => typeName(pos + 1), 30)
       } else {
         setPhase('done')
-        setShowCursor(false)
+        wait(() => setShowCursor(false), 1200)
       }
     }
 
     setPhase('typing-open')
     setDisplayed('')
-    schedule(() => typeOpen(0), 200)
+    setShowWave(false)
+    wait(() => typeOpen(0), 80)
 
     return () => {
       cancelled = true
-      cancelAnimationFrame(raf)
+      if (timer) clearTimeout(timer)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [profileLoading, greeting, name])
+  }, [greeting, name])
 
   /* Split displayed text into gradient / plain segments */
   const renderText = () => {
     if (phase === 'typing-open' || phase === 'pausing' || phase === 'erasing') {
-      return <span>{displayed}</span>
+      return (
+        <span className="inline-flex items-center">
+          <span>{displayed}</span>
+          {showWave && (
+            <motion.span
+              initial={{ scale: 0, rotate: -20 }}
+              animate={{ scale: 1, rotate: [0, 14, -8, 14, -4, 10, 0] }}
+              transition={{ duration: 0.5 }}
+              className="inline-block origin-[70%_70%] ml-1.5 select-none"
+              aria-hidden="true"
+            >
+              👋
+            </motion.span>
+          )}
+        </span>
+      )
     }
     /* typing-name or done */
     const plain = displayed.slice(0, NAME_START)

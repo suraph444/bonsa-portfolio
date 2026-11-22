@@ -24,6 +24,8 @@ function PortraitPhoto({ src, alt }: { src: string; alt: string }) {
       <img
         src={src}
         alt={alt}
+        decoding="async"
+        fetchPriority="high"
         className={`relative w-full h-full object-contain object-bottom select-none pointer-events-none drop-shadow-[0_25px_45px_rgba(0,0,0,0.85)] transition-opacity duration-300 ${loaded ? 'opacity-100' : 'opacity-0'}`}
         draggable={false}
         onLoad={() => setLoaded(true)}
