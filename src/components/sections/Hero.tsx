@@ -195,13 +195,16 @@ function AnimatedGreeting({
   name, greeting, prefersReduced,
 }: { name: string; greeting: string; prefersReduced: boolean | null; profileLoading?: boolean }) {
   const OPENING_TEXT = 'Hey there!'
-  const FULL_NAME = `${greeting} ${name}`
-  const NAME_START = `${greeting} `.length
+  const nameRef = useRef(name)
+  const greetingRef = useRef(greeting)
+  nameRef.current = name
+  greetingRef.current = greeting
 
   const [phase, setPhase] = useState<GreetingPhase>('typing-open')
   const [displayed, setDisplayed] = useState('')
   const [showCursor, setShowCursor] = useState(true)
   const [showWave, setShowWave] = useState(false)
+  const animStartedRef = useRef(false)
 
   /* reduced-motion: skip straight to final text */
   if (prefersReduced) {
@@ -210,6 +213,9 @@ function AnimatedGreeting({
 
   // eslint-disable-next-line react-hooks/rules-of-hooks
   useEffect(() => {
+    if (animStartedRef.current) return
+    animStartedRef.current = true
+
     let timer: ReturnType<typeof setTimeout> | null = null
     let cancelled = false
 
@@ -249,8 +255,12 @@ function AnimatedGreeting({
 
     function typeName(pos: number) {
       if (cancelled) return
-      if (pos <= FULL_NAME.length) {
-        setDisplayed(FULL_NAME.slice(0, pos))
+      const currentGreeting = greetingRef.current || "I'm"
+      const currentName = nameRef.current || 'Bonsa Muluneh'
+      const fullName = `${currentGreeting} ${currentName}`
+
+      if (pos <= fullName.length) {
+        setDisplayed(fullName.slice(0, pos))
         wait(() => typeName(pos + 1), 45)
       } else {
         setPhase('done')
@@ -267,7 +277,7 @@ function AnimatedGreeting({
       cancelled = true
       if (timer) clearTimeout(timer)
     }
-  }, [greeting, name])
+  }, [])
 
   /* Split displayed text into gradient / plain segments */
   const renderText = () => {
@@ -294,8 +304,10 @@ function AnimatedGreeting({
       )
     }
     /* typing-name or done */
-    const plain = displayed.slice(0, NAME_START)
-    const grad  = displayed.slice(NAME_START)
+    const currentGreeting = greetingRef.current || "I'm"
+    const nameStart = `${currentGreeting} `.length
+    const plain = displayed.slice(0, nameStart)
+    const grad  = displayed.slice(nameStart)
     return (
       <>
         <span>{plain}</span>
