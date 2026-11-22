@@ -1,6 +1,6 @@
 import { useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { X, ExternalLink, Github, CheckCircle2, AlertCircle, Layers, UserCheck } from 'lucide-react'
+import { X, ExternalLink, Github, CheckCircle2, AlertCircle, Layers, UserCheck, Clock } from 'lucide-react'
 import { Project } from '../../types'
 import Tag from './Tag'
 import Button from './Button'
@@ -164,17 +164,17 @@ export default function ProjectDetailsModal({
               </div>
 
               {/* Action Buttons */}
-              <div className="pt-4 border-t border-border flex flex-wrap items-center gap-3">
+              <div className="pt-4 border-t border-border flex flex-wrap items-center gap-2.5 sm:gap-3">
                 {project.liveUrl ? (
                   <Button size="md" href={project.liveUrl}>
                     <ExternalLink size={15} />
                     Live Preview
                   </Button>
                 ) : (
-                  <Button size="md" disabled>
-                    <ExternalLink size={15} />
+                  <span className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-mono font-medium text-amber-400 bg-amber-500/10 border border-amber-500/25">
+                    <Clock size={13} />
                     Live Demo Coming Soon
-                  </Button>
+                  </span>
                 )}
 
                 {project.sourceUrl ? (
@@ -182,7 +182,11 @@ export default function ProjectDetailsModal({
                     <Github size={15} />
                     View Repository
                   </Button>
-                ) : null}
+                ) : (
+                  <span className="inline-flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-mono text-muted bg-elevated border border-border">
+                    Source Code In Progress
+                  </span>
+                )}
 
                 <Button size="md" variant="ghost" onClick={onClose} className="ml-auto">
                   Close

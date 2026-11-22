@@ -14,6 +14,7 @@ import {
   X,
   Play,
   BookOpen,
+  Clock,
 } from 'lucide-react'
 import SectionHeading from '../ui/SectionHeading'
 import Container from '../ui/Container'
@@ -67,6 +68,8 @@ function ProjectCard({
   const isAlgoVisualizer =
     project.title.toLowerCase().includes('algorithm') ||
     project.title.toLowerCase().includes('dsa')
+  const hasLive = Boolean(project.liveUrl || isAlgoVisualizer)
+  const hasSource = Boolean(project.sourceUrl)
 
   return (
     <article
@@ -117,6 +120,12 @@ function ProjectCard({
               Featured
             </span>
           )}
+          {!hasLive && !hasSource && (
+            <span className="hidden xs:inline-flex px-1.5 py-0.5 text-[8px] sm:text-[9px] font-mono font-medium rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/30 items-center gap-1 backdrop-blur-md shadow-sm">
+              <Clock size={8} />
+              Soon
+            </span>
+          )}
         </div>
 
         {/* Hover overlay hint */}
@@ -162,6 +171,7 @@ function ProjectCard({
 
         {/* Action bar */}
         <div className="flex items-center gap-1.5 pt-2 border-t border-border/60 mt-auto">
+          {/* Details / Explain Details Button */}
           <button
             type="button"
             onClick={(e) => {
@@ -171,9 +181,10 @@ function ProjectCard({
             className="flex-1 inline-flex items-center justify-center gap-1 py-1 sm:py-1.5 px-2 rounded-lg text-[10px] sm:text-xs font-medium bg-elevated hover:bg-accent/15 hover:text-accent text-secondary border border-border/80 transition-colors"
           >
             <BookOpen size={11} className="hidden xs:inline shrink-0" />
-            <span>Details</span>
+            <span>{!hasLive && !hasSource ? 'Explain Details' : 'Details'}</span>
           </button>
 
+          {/* Live / Demo Button */}
           {isAlgoVisualizer ? (
             <button
               type="button"
@@ -199,17 +210,29 @@ function ProjectCard({
             </a>
           ) : null}
 
-          {project.sourceUrl && (
+          {/* GitHub Source Code */}
+          {hasSource && (
             <a
               href={project.sourceUrl}
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
               title="View Source on GitHub"
-              className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-lg text-secondary hover:text-primary hover:bg-elevated border border-border/70 transition-colors shrink-0"
+              className="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-secondary hover:text-primary hover:bg-elevated border border-border/70 transition-colors shrink-0"
             >
-              <Github size={12} />
+              <Github size={13} />
             </a>
+          )}
+
+          {/* For projects with no link and no source code: show Soon */}
+          {!hasLive && !hasSource && (
+            <span
+              className="inline-flex items-center gap-1 py-1 px-2 rounded-lg text-[9.5px] sm:text-[10.5px] font-mono font-medium bg-amber-500/10 text-amber-400 border border-amber-500/25 shrink-0"
+              title="Project in development — coming soon"
+            >
+              <Clock size={10} />
+              <span>Soon</span>
+            </span>
           )}
         </div>
       </div>
