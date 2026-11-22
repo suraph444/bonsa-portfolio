@@ -511,7 +511,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
                 sub={content.heroExperienceSubtext}
                 icon={Briefcase}
                 delay={0.3}
-                className="!absolute -left-2 xs:left-0 bottom-1 !w-[6.75rem] xs:!w-28 text-left !p-2 shadow-2xl bg-card/95 border-white/15"
+                className="!absolute -left-1 xs:left-0 bottom-1 !w-[6.25rem] xs:!w-28 text-left !p-1.5 xs:!p-2 shadow-2xl bg-card/95 border-white/15"
               />
 
               {/* Portrait */}
@@ -524,7 +524,7 @@ export default function Hero({ onOpenResume }: HeroProps) {
                 sub="built & live"
                 icon={Layers}
                 delay={0.4}
-                className="!absolute -right-2 xs:right-0 bottom-1 !w-[6.75rem] xs:!w-28 text-left !p-2 shadow-2xl bg-card/95 border-white/15"
+                className="!absolute -right-1 xs:right-0 bottom-1 !w-[6.25rem] xs:!w-28 text-left !p-1.5 xs:!p-2 shadow-2xl bg-card/95 border-white/15"
               />
 
               {/* Top-Right Pill: Certs */}

@@ -70,13 +70,11 @@ function ProjectCard({
 
   return (
     <article
-      className={`rounded-xl sm:rounded-2xl overflow-hidden bg-card border border-border/80 ${categoryConfig.border} transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${categoryConfig.glow} flex flex-col group h-full`}
+      onClick={() => onOpenDetails(project)}
+      className={`rounded-xl sm:rounded-2xl overflow-hidden bg-card border border-border/80 ${categoryConfig.border} transition-all duration-300 hover:-translate-y-1 hover:shadow-lg ${categoryConfig.glow} flex flex-col group h-full cursor-pointer select-none`}
     >
       {/* Clickable Image Preview */}
-      <div
-        className="relative h-28 xs:h-32 sm:h-40 md:h-44 overflow-hidden bg-elevated cursor-pointer"
-        onClick={() => onOpenDetails(project)}
-      >
+      <div className="relative aspect-[16/10] overflow-hidden bg-elevated">
         {project.image ? (
           <img
             src={project.image}
@@ -101,20 +99,20 @@ function ProjectCard({
         </div>
 
         {/* Subtle vignette gradient */}
-        <div className="absolute inset-0 bg-gradient-to-t from-card/90 via-transparent to-black/25 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-card/95 via-transparent to-black/30 pointer-events-none" />
 
         {/* Category & Featured Badge */}
         <div className="absolute top-2 left-2 flex items-center gap-1 z-10">
           {project.category && (
             <span
-              className={`px-1.5 py-0.5 text-[8.5px] sm:text-[10px] font-mono font-medium rounded-md border backdrop-blur-md shadow-sm flex items-center gap-1 ${categoryConfig.badge}`}
+              className={`px-1.5 sm:px-2 py-0.5 text-[8.5px] sm:text-[9.5px] font-mono font-medium rounded-md border backdrop-blur-md shadow-sm flex items-center gap-1 ${categoryConfig.badge}`}
             >
               <span className="w-1.5 h-1.5 rounded-full bg-current animate-pulse" />
               <span>{project.category}</span>
             </span>
           )}
           {project.featured && (
-            <span className="hidden xs:inline-flex px-1.5 py-0.5 text-[8.5px] sm:text-[9.5px] font-mono font-semibold rounded-md bg-accent text-white items-center gap-0.5 shadow-sm">
+            <span className="hidden xs:inline-flex px-1.5 py-0.5 text-[8.5px] sm:text-[9px] font-mono font-semibold rounded-md bg-accent text-white items-center gap-0.5 shadow-sm">
               <Sparkles size={8} />
               Featured
             </span>
@@ -124,97 +122,95 @@ function ProjectCard({
         {/* Hover overlay hint */}
         <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity duration-200 flex items-center justify-center">
           <span className="inline-flex items-center gap-1 text-[11px] font-medium text-white bg-black/80 px-2.5 py-1 rounded-lg backdrop-blur-md border border-white/10 shadow">
-            <span>Details</span>
+            <span>Case Study</span>
             <ArrowUpRight size={12} />
           </span>
         </div>
       </div>
 
       {/* Content */}
-      <div className="flex flex-col flex-1 p-2.5 sm:p-3.5 md:p-4 gap-2 sm:gap-3 justify-between">
-        <div className="space-y-1 sm:space-y-1.5">
-          <h3
-            onClick={() => onOpenDetails(project)}
-            className="font-display font-semibold text-primary text-xs sm:text-sm md:text-base leading-snug group-hover:text-accent transition-colors cursor-pointer flex items-start justify-between gap-1"
-          >
+      <div className="flex flex-col flex-1 p-2.5 sm:p-3.5 md:p-4 gap-2 justify-between">
+        <div className="space-y-1">
+          <h3 className="font-display font-semibold text-primary text-[12px] sm:text-sm md:text-base leading-snug group-hover:text-accent transition-colors flex items-start justify-between gap-1">
             <span className="line-clamp-2">{project.title}</span>
             <ArrowUpRight
               size={13}
               className="text-muted group-hover:text-accent group-hover:translate-x-0.5 group-hover:-translate-y-0.5 transition-all shrink-0 mt-0.5 hidden xs:inline-block"
             />
           </h3>
-          <p className="text-secondary text-[10px] sm:text-xs leading-relaxed line-clamp-2">
+          <p className="text-secondary text-[10px] sm:text-xs leading-relaxed line-clamp-2 opacity-85">
             {project.description}
           </p>
         </div>
 
         {/* Tech tags */}
-        <div className="flex flex-wrap items-center gap-1">
+        <div className="flex flex-wrap items-center gap-1 my-0.5">
           {project.technologies.slice(0, 2).map((tech) => (
             <span
               key={tech}
-              className="font-mono text-[8.5px] sm:text-[9.5px] px-1.5 py-0.5 rounded bg-elevated text-secondary border border-border/70 truncate max-w-[85px] xs:max-w-none"
+              className="font-mono text-[8px] sm:text-[9.5px] px-1.5 py-0.5 rounded bg-elevated/80 text-secondary border border-border/70 truncate max-w-[80px] xs:max-w-none"
             >
               {tech}
             </span>
           ))}
           {project.technologies.length > 2 && (
-            <span className="font-mono text-[8.5px] sm:text-[9.5px] text-muted self-center px-0.5">
+            <span className="font-mono text-[8px] sm:text-[9px] text-muted self-center px-0.5">
               +{project.technologies.length - 2}
             </span>
           )}
         </div>
 
         {/* Action bar */}
-        <div className="flex items-center justify-between gap-1 pt-2 border-t border-border/60">
+        <div className="flex items-center gap-1.5 pt-2 border-t border-border/60 mt-auto">
           <button
-            onClick={() => onOpenDetails(project)}
-            className="inline-flex items-center gap-1 px-2 py-1 rounded-lg text-[10px] sm:text-xs font-medium bg-elevated hover:bg-accent/15 hover:text-accent text-secondary border border-border/80 transition-colors"
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation()
+              onOpenDetails(project)
+            }}
+            className="flex-1 inline-flex items-center justify-center gap-1 py-1 sm:py-1.5 px-2 rounded-lg text-[10px] sm:text-xs font-medium bg-elevated hover:bg-accent/15 hover:text-accent text-secondary border border-border/80 transition-colors"
           >
-            <BookOpen size={11} className="hidden xs:inline" />
+            <BookOpen size={11} className="hidden xs:inline shrink-0" />
             <span>Details</span>
           </button>
 
-          <div className="flex items-center gap-1">
-            {project.sourceUrl && (
-              <a
-                href={project.sourceUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                title="View Source on GitHub"
-                className="inline-flex items-center justify-center p-1 sm:p-1.5 rounded-lg text-secondary hover:text-primary hover:bg-elevated border border-border/70 transition-colors"
-              >
-                <Github size={12} />
-              </a>
-            )}
+          {isAlgoVisualizer ? (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                onOpenVisualizer()
+              }}
+              className="inline-flex items-center gap-1 py-1 sm:py-1.5 px-2.5 rounded-lg text-[10px] sm:text-xs font-mono font-medium bg-gradient-to-r from-accent to-accent/90 text-white hover:brightness-110 transition-all shadow-sm shrink-0"
+            >
+              <Play size={10} className="fill-current" />
+              <span>Demo</span>
+            </button>
+          ) : project.liveUrl ? (
+            <a
+              href={project.liveUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="inline-flex items-center gap-1 py-1 sm:py-1.5 px-2.5 rounded-lg text-[10px] sm:text-xs font-mono font-medium bg-accent text-white hover:bg-accent/90 transition-colors shadow-sm shrink-0"
+            >
+              <span>Live</span>
+              <ExternalLink size={10} />
+            </a>
+          ) : null}
 
-            {isAlgoVisualizer ? (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation()
-                  onOpenVisualizer()
-                }}
-                className="inline-flex items-center gap-0.5 px-2 py-1 rounded-lg text-[10px] sm:text-xs font-mono font-medium bg-gradient-to-r from-accent to-accent/90 text-white hover:brightness-110 transition-all shadow-sm"
-              >
-                <Play size={10} className="fill-current" />
-                <span>Demo</span>
-              </button>
-            ) : project.liveUrl ? (
-              <a
-                href={project.liveUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-0.5 px-2 py-1 rounded-lg text-[10px] sm:text-xs font-mono font-medium bg-accent text-white hover:bg-accent/90 transition-colors shadow-sm"
-              >
-                <span>Live</span>
-                <ExternalLink size={10} />
-              </a>
-            ) : (
-              <span className="text-[9px] sm:text-[10px] font-mono text-muted/60 px-1 py-0.5">
-                Soon
-              </span>
-            )}
-          </div>
+          {project.sourceUrl && (
+            <a
+              href={project.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              title="View Source on GitHub"
+              className="inline-flex items-center justify-center w-6 h-6 sm:w-7 sm:h-7 rounded-lg text-secondary hover:text-primary hover:bg-elevated border border-border/70 transition-colors shrink-0"
+            >
+              <Github size={12} />
+            </a>
+          )}
         </div>
       </div>
     </article>

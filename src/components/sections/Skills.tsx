@@ -101,11 +101,11 @@ export default function Skills() {
                     animate={{ opacity: 1, y: 0 }}
                     exit={{ opacity: 0, scale: 0.96 }}
                     transition={{ duration: 0.35, delay: i * 0.04 }}
-                    className="group flex flex-col justify-between rounded-xl sm:rounded-2xl border border-border bg-card p-3 sm:p-6 transition-all duration-300 hover:border-accent/40 hover:-translate-y-1 shadow-md shadow-black/10"
+                    className="group flex flex-col justify-between rounded-xl sm:rounded-2xl border border-border/80 bg-card p-2.5 xs:p-3.5 sm:p-6 transition-all duration-300 hover:border-accent/40 hover:-translate-y-1 shadow-md shadow-black/10"
                   >
                     <div>
                       {/* Header */}
-                      <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-5">
+                      <div className="flex items-center gap-2 sm:gap-3 mb-2.5 sm:mb-4">
                         <div className="w-7 h-7 sm:w-10 sm:h-10 flex items-center justify-center rounded-lg sm:rounded-xl bg-accent/10 border border-accent/20 text-accent transition-colors group-hover:bg-accent/15 shrink-0">
                           <Icon size={14} className="sm:hidden" />
                           <Icon size={18} className="hidden sm:block" />
@@ -114,21 +114,21 @@ export default function Skills() {
                           <h3 className="font-display font-semibold text-primary text-xs sm:text-base leading-tight truncate">
                             {cat.label}
                           </h3>
-                          <span className="font-mono text-[9.5px] sm:text-[11px] text-muted">
-                            {cat.skills.length} techs
+                          <span className="font-mono text-[9px] sm:text-[11px] text-muted">
+                            {cat.skills.length} skills
                           </span>
                         </div>
                       </div>
 
                       {/* Clean Skill Pills */}
-                      <div className="flex flex-wrap gap-1.5 sm:gap-2">
+                      <div className="flex flex-wrap gap-1 sm:gap-1.5">
                         {cat.skills.map((skill) => (
                           <span
                             key={skill}
-                            className="inline-flex items-center gap-1 sm:gap-1.5 px-2 py-1 sm:px-3 sm:py-1.5 rounded-md sm:rounded-lg border border-border bg-elevated/80 font-mono text-[10px] sm:text-xs text-secondary transition-all duration-200 hover:border-accent/40 hover:text-primary hover:bg-elevated cursor-default"
+                            className="inline-flex items-center gap-1 sm:gap-1.5 px-1.5 py-0.5 sm:px-2.5 sm:py-1 rounded-md sm:rounded-lg border border-border/70 bg-elevated/80 font-mono text-[9px] xs:text-[10px] sm:text-xs text-secondary transition-all duration-200 hover:border-accent/40 hover:text-primary hover:bg-elevated cursor-default"
                           >
                             <span className="w-1 h-1 sm:w-1.5 sm:h-1.5 rounded-full bg-accent/70 shrink-0" />
-                            <span className="truncate">{skill}</span>
+                            <span className="truncate max-w-[120px] sm:max-w-none">{skill}</span>
                           </span>
                         ))}
                       </div>
