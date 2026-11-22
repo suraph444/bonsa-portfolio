@@ -222,11 +222,11 @@ function AnimatedGreeting({
       if (cancelled) return
       if (pos <= OPENING_TEXT.length) {
         setDisplayed(OPENING_TEXT.slice(0, pos))
-        wait(() => typeOpen(pos + 1), 32)
+        wait(() => typeOpen(pos + 1), 48)
       } else {
         setShowWave(true)
         setPhase('pausing')
-        wait(startErase, 420)
+        wait(startErase, 1000)
       }
     }
 
@@ -240,10 +240,10 @@ function AnimatedGreeting({
       if (cancelled) return
       if (pos >= 0) {
         setDisplayed(OPENING_TEXT.slice(0, pos))
-        wait(() => eraseOpen(pos - 1), 18)
+        wait(() => eraseOpen(pos - 1), 32)
       } else {
         setPhase('typing-name')
-        wait(() => typeName(0), 70)
+        wait(() => typeName(0), 200)
       }
     }
 
@@ -251,17 +251,17 @@ function AnimatedGreeting({
       if (cancelled) return
       if (pos <= FULL_NAME.length) {
         setDisplayed(FULL_NAME.slice(0, pos))
-        wait(() => typeName(pos + 1), 30)
+        wait(() => typeName(pos + 1), 45)
       } else {
         setPhase('done')
-        wait(() => setShowCursor(false), 1200)
+        wait(() => setShowCursor(false), 1400)
       }
     }
 
     setPhase('typing-open')
     setDisplayed('')
     setShowWave(false)
-    wait(() => typeOpen(0), 80)
+    wait(() => typeOpen(0), 120)
 
     return () => {
       cancelled = true
@@ -277,9 +277,13 @@ function AnimatedGreeting({
           <span>{displayed}</span>
           {showWave && (
             <motion.span
-              initial={{ scale: 0, rotate: -20 }}
-              animate={{ scale: 1, rotate: [0, 14, -8, 14, -4, 10, 0] }}
-              transition={{ duration: 0.5 }}
+              initial={{ scale: 0, rotate: -15, opacity: 0 }}
+              animate={{ scale: 1, rotate: [0, 16, -8, 14, -4, 0], opacity: 1 }}
+              transition={{
+                scale: { duration: 0.25, ease: 'easeOut' },
+                rotate: { duration: 1.0, ease: 'easeInOut' },
+                opacity: { duration: 0.2 },
+              }}
               className="inline-block origin-[70%_70%] ml-1.5 select-none"
               aria-hidden="true"
             >
