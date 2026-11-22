@@ -170,7 +170,7 @@ function ProjectCard({
         </div>
 
         {/* Action bar */}
-        <div className="flex items-center gap-1.5 pt-2 border-t border-border/60 mt-auto">
+        <div className="flex items-center gap-1 xs:gap-1.5 pt-2 border-t border-border/60 mt-auto min-w-0">
           {/* Details / Explain Details Button */}
           <button
             type="button"
@@ -178,10 +178,10 @@ function ProjectCard({
               e.stopPropagation()
               onOpenDetails(project)
             }}
-            className="flex-1 inline-flex items-center justify-center gap-1 py-1 sm:py-1.5 px-2 rounded-lg text-[10px] sm:text-xs font-medium bg-elevated hover:bg-accent/15 hover:text-accent text-secondary border border-border/80 transition-colors"
+            className="flex-1 min-w-0 inline-flex items-center justify-center gap-1 py-1 sm:py-1.5 px-1.5 sm:px-2 rounded-lg text-[9.5px] xs:text-[10px] sm:text-xs font-medium bg-elevated hover:bg-accent/15 hover:text-accent text-secondary border border-border/80 transition-colors"
           >
-            <BookOpen size={11} className="hidden xs:inline shrink-0" />
-            <span>{!hasLive && !hasSource ? 'Explain Details' : 'Details'}</span>
+            <BookOpen size={10} className="hidden xs:inline shrink-0" />
+            <span className="truncate">{!hasLive && !hasSource ? 'Details' : 'Details'}</span>
           </button>
 
           {/* Live / Demo Button */}
@@ -192,9 +192,9 @@ function ProjectCard({
                 e.stopPropagation()
                 onOpenVisualizer()
               }}
-              className="inline-flex items-center gap-1 py-1 sm:py-1.5 px-2.5 rounded-lg text-[10px] sm:text-xs font-mono font-medium bg-gradient-to-r from-accent to-accent/90 text-white hover:brightness-110 transition-all shadow-sm shrink-0"
+              className="inline-flex items-center justify-center gap-1 py-1 sm:py-1.5 px-1.5 xs:px-2 rounded-lg text-[9.5px] xs:text-[10px] sm:text-xs font-mono font-medium bg-gradient-to-r from-accent to-accent/90 text-white hover:brightness-110 transition-all shadow-sm shrink-0"
             >
-              <Play size={10} className="fill-current" />
+              <Play size={8} className="fill-current shrink-0" />
               <span>Demo</span>
             </button>
           ) : project.liveUrl ? (
@@ -203,10 +203,10 @@ function ProjectCard({
               target="_blank"
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
-              className="inline-flex items-center gap-1 py-1 sm:py-1.5 px-2.5 rounded-lg text-[10px] sm:text-xs font-mono font-medium bg-accent text-white hover:bg-accent/90 transition-colors shadow-sm shrink-0"
+              className="inline-flex items-center justify-center gap-1 py-1 sm:py-1.5 px-1.5 xs:px-2 rounded-lg text-[9.5px] xs:text-[10px] sm:text-xs font-mono font-medium bg-accent text-white hover:bg-accent/90 transition-colors shadow-sm shrink-0"
             >
               <span>Live</span>
-              <ExternalLink size={10} />
+              <ExternalLink size={9} className="shrink-0" />
             </a>
           ) : null}
 
@@ -218,19 +218,19 @@ function ProjectCard({
               rel="noopener noreferrer"
               onClick={(e) => e.stopPropagation()}
               title="View Source on GitHub"
-              className="inline-flex items-center justify-center w-7 h-7 sm:w-8 sm:h-8 rounded-lg text-secondary hover:text-primary hover:bg-elevated border border-border/70 transition-colors shrink-0"
+              className="inline-flex items-center justify-center w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 rounded-lg text-secondary hover:text-primary hover:bg-elevated border border-border/70 transition-colors shrink-0"
             >
-              <Github size={13} />
+              <Github size={11} className="shrink-0" />
             </a>
           )}
 
           {/* For projects with no link and no source code: show Soon */}
           {!hasLive && !hasSource && (
             <span
-              className="inline-flex items-center gap-1 py-1 px-2 rounded-lg text-[9.5px] sm:text-[10.5px] font-mono font-medium bg-amber-500/10 text-amber-400 border border-amber-500/25 shrink-0"
+              className="inline-flex items-center gap-0.5 sm:gap-1 py-1 px-1.5 sm:px-2 rounded-lg text-[9px] sm:text-[10px] font-mono font-medium bg-amber-500/10 text-amber-400 border border-amber-500/25 shrink-0"
               title="Project in development — coming soon"
             >
-              <Clock size={10} />
+              <Clock size={9} className="shrink-0" />
               <span>Soon</span>
             </span>
           )}
