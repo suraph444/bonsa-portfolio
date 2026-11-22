@@ -54,3 +54,15 @@
     @apply transition-all duration-300 hover:border-accent/40 hover:-translate-y-1;
   }
 }
+
+/* Hide Netlify injected badge / drawer */
+[data-netlify-badge],
+#netlify-badge,
+netlify-drawer,
+div:has(> a[href*="netlify.com"]),
+iframe[src*="netlify"] {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
